@@ -1,3 +1,4 @@
+import { SessionProvider } from "next-auth/react";
 import { VideoComponent } from "./VideoComponent";
 import { VideoDetails } from "./VideoDetails";
 

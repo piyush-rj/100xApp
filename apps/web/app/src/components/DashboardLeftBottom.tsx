@@ -69,7 +69,7 @@ export function DashboardLeftBottom() {
         </div>
 
         <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 z-10">
-          <Button text="POST"/>
+          <Button text="GAMES"/>
         </div>
       </div>
     </div>
