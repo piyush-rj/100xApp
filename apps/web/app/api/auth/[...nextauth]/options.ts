@@ -18,6 +18,12 @@ declare module "next-auth" {
 }
 
 export const authOptions: AuthOptions = {
+  session: {
+    strategy: "jwt"
+  },
+  pages: {
+    signIn: "/auth/signin"
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -26,10 +32,14 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
-      if (!user.email) return false;
+      if (!user.email) {
+        return false;
+      };
 
       await db.user.upsert({
-        where: { email: user.email },
+        where: { 
+          email: user.email 
+        },
         create: {
           email: user.email,
           fullName: user.name ?? "",
@@ -41,12 +51,21 @@ export const authOptions: AuthOptions = {
 
       return true;
     },
-    async session({ session, user }) {
+    async jwt ({ token, user }) {
+      if(user){
+        token.id = user.id;
+      }
+      return token
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = token.id as string;
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/dashboard`
+    }
   },
   secret: process.env.NEXTAUTH_SECRET || "secret",
 };
