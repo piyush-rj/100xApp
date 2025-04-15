@@ -23,11 +23,11 @@ const GlowingText: React.FC<GlowingTextProps> = ({ text }) => {
     });
 
     glow.to(el, {
-      filter: `drop-shadow(0 0 8px #0284c7) drop-shadow(0 0 12px #0369a1)`,
+      filter: `drop-shadow(0 0 8px #711571) drop-shadow(0 0 12px #0369a1)`,
     });
 
     glow.to(el, {
-      filter: `drop-shadow(0 0 1px #38bdf8) drop-shadow(0 0 4px #0ea5e9)`,
+      filter: `drop-shadow(0 0 1px #371337) drop-shadow(0 0 4px #0ea5e9)`,
     });
   }, []);
 

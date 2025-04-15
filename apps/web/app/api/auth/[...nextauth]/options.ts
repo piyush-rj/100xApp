@@ -73,7 +73,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      return `${baseUrl}/dashboard`;
+      return `${baseUrl}/api/dashboard`;
     }
   },
   secret: process.env.NEXTAUTH_SECRET || "secret",

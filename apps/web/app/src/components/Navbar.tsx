@@ -8,7 +8,7 @@ export default function Navbar() {
   const { data: session, status } = useSession();
 
   return (
-    <div className="bg-transparent pt-6 p-2 py-0 px-6 flex justify-between">
+    <div className="bg-transparent pt-6 p-2 py-4 px-6 flex justify-between backdrop-blur-xl">
       {/* left */}
       <div className="text-xl font-semibold">
         <GlowingText text="GamerConnect"/>

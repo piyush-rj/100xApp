@@ -3,6 +3,7 @@ import { useState } from "react"
 import { DashboardLeftTop } from "./components/DashboardLeftTop"
 import { DashboardRightTop } from "./components/DashboardRightTop"
 import Preloader from "./components/Preloader"
+import DashboardRightTopTest from "./components/DashboardRightTopTest"
 
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +19,7 @@ const Dashboard = () => {
                             <DashboardLeftTop/>
                         </div>
                         <div className="h-full w-[55%]">
-                            <DashboardRightTop/>
+                            <DashboardRightTopTest/>
                         </div>
                     </div>
                 </main>
