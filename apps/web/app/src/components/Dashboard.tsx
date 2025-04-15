@@ -1,4 +1,3 @@
-import { SessionProvider } from "next-auth/react";
 import { DashboardLeftTop } from "./DashbaordLeftTop";
 import { DashboardLeftBottom } from "./DashboardLeftBottom";
 import DashboardMain from "./DashboardMain";
@@ -13,10 +12,8 @@ export default function Dashboard() {
         </div>
 
         <div className="w-full h-full overflow-y-auto min-h-screen">
-            <SessionProvider>
 
                 <DashboardMain />
-            </SessionProvider>
         </div>
         </div>
     );

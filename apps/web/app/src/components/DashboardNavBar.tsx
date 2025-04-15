@@ -8,10 +8,13 @@ export function DashboardMenu() {
     const { data: session } = useSession();
 
     const [query, setQuery] = useState("");
+    console.log("session is ", session)
+
 
     return (
         <div className="min-w-screen bg-gradient-to-br from-[#121212]  to-[#1e1e1e] h-[60px] bg-white/5 border border-white/10 mt-3 mx-4 rounded-xl flex items-center justify-between px-6 ">  
             <div className="text-xl font-semibold text-white">
+                
                 <Link href="/dashboard">GamerConnect</Link>
             </div>
 
@@ -22,12 +25,11 @@ export function DashboardMenu() {
                 placeholder="Search for players, games, or teams..."
             />
             </div>
-
             <div className="flex items-center space-x-3">
             {session?.user?.image && (
                 <img
                 src={session.user.image}
-                alt={session.user.name || "User"}
+                alt={session.user.name || "u"}
                 className="h-9 w-9 rounded-full"
                 />
             )}

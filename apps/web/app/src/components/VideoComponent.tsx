@@ -69,7 +69,7 @@ export function VideoComponent({ src }: { src: string }) {
 
     return (
         <div className="relative w-full max-w-full mx-2 rounded-xl overflow-hidden bg-black group">
-        {/* Video Element */}
+        {/* video element */}
         <video
             ref={videoRef}
             src={src}
@@ -101,7 +101,7 @@ export function VideoComponent({ src }: { src: string }) {
             ></div>
         </div>
 
-        {/* Volume Control */}
+        {/* volume control */}
         <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-2 text-sm text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <span>{`${Math.floor(duration / 60)}:${Math.floor(duration % 60)
             .toString()

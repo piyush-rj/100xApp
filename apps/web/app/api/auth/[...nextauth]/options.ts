@@ -1,8 +1,6 @@
-
 import GoogleProvider from "next-auth/providers/google";
-import { type AuthOptions } from "next-auth";
+import { JWT, type AuthOptions } from "next-auth";
 import { PrismaClient } from "@prisma/client"
-
 
 const db = new PrismaClient();
 
@@ -12,8 +10,12 @@ declare module "next-auth" {
       id: string;
       name?: string | null;
       email?: string | null;
-      image?: string | null
+      image?: string | null;
     }
+  }
+  
+  interface JWT {
+    id: string;
   }
 }
 
@@ -32,30 +34,37 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
-      if (!user.email) {
+      try {
+        if (!user.email) {
+          return false;
+        }
+
+        const dbUser = await db.user.upsert({
+          where: { 
+            email: user.email 
+          },
+          create: {
+            email: user.email,
+            fullName: user.name ?? "",
+          },
+          update: {
+            fullName: user.name ?? "",
+          },
+        });
+        
+        user.id = dbUser.id;
+        
+        return true;
+      } catch (error) {
+        console.error("Error during sign in:", error);
         return false;
-      };
-
-      await db.user.upsert({
-        where: { 
-          email: user.email 
-        },
-        create: {
-          email: user.email,
-          fullName: user.name ?? "",
-        },
-        update: {
-          fullName: user.name ?? "",
-        },
-      });
-
-      return true;
+      }
     },
-    async jwt ({ token, user }) {
-      if(user){
+    async jwt({ token, user }) {
+      if (user) {
         token.id = user.id;
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       if (session.user) {
@@ -64,7 +73,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      return `${baseUrl}/dashboard`
+      return `${baseUrl}/dashboard`;
     }
   },
   secret: process.env.NEXTAUTH_SECRET || "secret",
