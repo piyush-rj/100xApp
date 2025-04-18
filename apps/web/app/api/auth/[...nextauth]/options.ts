@@ -24,7 +24,8 @@ export const authOptions: AuthOptions = {
     strategy: "jwt"
   },
   pages: {
-    signIn: "/auth/signin"
+    signIn: "/auth/signin",
+    signOut: "/auth/signin"
   },
   providers: [
     GoogleProvider({
@@ -73,6 +74,12 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
+      // Handle signout specifically
+      if (url.includes('/signout') || url.includes('/signin')) {
+        return url;
+      }
+      
+      // For other cases, redirect to dashboard
       return `${baseUrl}/api/dashboard`;
     }
   },

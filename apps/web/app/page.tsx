@@ -1,8 +1,9 @@
+import SignIn from "./auth/signin/page";
 
 export default function Home() {
   return (
     <div>
-      root page.tsx
+      <SignIn/>
     </div>
   );
 }
