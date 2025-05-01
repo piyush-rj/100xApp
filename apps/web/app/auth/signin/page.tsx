@@ -2,7 +2,9 @@
 
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { Caveat } from "next/font/google"
 
+const caveat = Caveat({weight: "400"})
 export default function SignIn() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/api/dashboard";
@@ -11,7 +13,7 @@ export default function SignIn() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-black text-white">
       <div className="w-full max-w-md p-8 space-y-8 bg-gray-800 rounded-xl shadow-xl">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-6">Sign in to GamerConnect</h1>
+          <h1 className={`${caveat.className} text-3xl font-bold mb-6`}>Sign in to GamerConnect</h1>
           <p className="text-gray-300 mb-8">Connect with gamers around the world</p>
         </div>
         

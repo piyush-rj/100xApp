@@ -1,19 +1,16 @@
 import GoogleProvider from "next-auth/providers/google";
-import { JWT, type AuthOptions } from "next-auth";
-import { PrismaClient } from "@prisma/client"
-
-const db = new PrismaClient();
+import { type AuthOptions } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      name?: string | null;
+      fullName?: string | null;
       email?: string | null;
       image?: string | null;
-    }
+    };
   }
-  
+
   interface JWT {
     id: string;
   }
@@ -21,11 +18,11 @@ declare module "next-auth" {
 
 export const authOptions: AuthOptions = {
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
   pages: {
     signIn: "/auth/signin",
-    signOut: "/auth/signin"
+    signOut: "/auth/signin",
   },
   providers: [
     GoogleProvider({
@@ -36,52 +33,43 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user }) {
       try {
-        if (!user.email) {
+        if (!user.email || !user.id) return false;
+
+        const response = await fetch("http://localhost:8080/api/auth/oauth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            oauthId: user.id,
+            name: user.name || "Anonymous",
+            email: user.email,
+            image: user.image || "",
+          }),
+        });
+
+        if (!response.ok) {
+          console.error("Failed to sync user with backend.");
           return false;
         }
 
-        const dbUser = await db.user.upsert({
-          where: { 
-            email: user.email 
-          },
-          create: {
-            email: user.email,
-            fullName: user.name ?? "",
-          },
-          update: {
-            fullName: user.name ?? "",
-          },
-        });
-        
-        user.id = dbUser.id;
-        
         return true;
-      } catch (error) {
-        console.error("Error during sign in:", error);
+      } catch (err) {
+        console.error("Error during signIn callback:", err);
         return false;
       }
     },
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
+      if (user) token.id = user.id;
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-      }
+      if (session.user) session.user.id = token.id as string;
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Handle signout specifically
-      if (url.includes('/signout') || url.includes('/signin')) {
-        return url;
-      }
-      
-      // For other cases, redirect to dashboard
-      return `${baseUrl}/api/dashboard`;
-    }
+      return url.includes("/signin") || url.includes("/signout")
+        ? url
+        : `${baseUrl}/dashboard`;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET || "secret",
 };

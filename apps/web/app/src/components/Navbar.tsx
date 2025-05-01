@@ -18,10 +18,11 @@ export default function Navbar() {
   }
 
   return (
-    <div className="bg-transparent pt-6 p-2 py-4 px-6 flex justify-between backdrop-blur-xl">
+    <div className="bg-transparent pt-6 p-2 py-3 px-6 flex justify-between backdrop-blur-xl">
       {/* left */}
       <div className="text-xl font-semibold">
-        <GlowingText text="GamerConnect"/>
+        {/* <GlowingText text="GamerConnect"/> */}
+        GamerConnect
       </div>
 
       {/* middle */}
@@ -59,7 +60,7 @@ export default function Navbar() {
         {/* dropdown menu */}
 
         { menuOpen && (
-          <div className="absolute flex justify-center top-12 right-0 bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 w-36 z-10">
+          <div className="absolute flex justify-center top-12 right-0 bg-white dark:bg-black shadow-lg rounded-md py-1 border border-[#2d2d2d] w-36 z-10">
             <span onClick={handleLogout} className="text-[16px] text-[#e4e4e4] hover:text-red-500 hover:underline transition-all transform duration-150 cursor-pointer ">Logout</span>
           </div>
         )}
